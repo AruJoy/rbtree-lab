@@ -42,7 +42,7 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
   // case1: 삽입위치가 루트노드면 루트에 삽입
   if(t->root == t->nil){
     t->root = cur_node;
-    cur_node->parent = t->nil;
+    cur_node->color = RBTREE_BLACK;
     return t->root;
   }
   
@@ -53,12 +53,21 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
       return t->root;
     }
     else if (parent_node->key < key){
-      parent_node = parent_node->left;
-    }else{
+      // 다음 위치가 nil이라면, break
+      if(parent_node->right == t->nil){
+        break;
+      }
+      // 아니면, 이동
       parent_node = parent_node->right;
+    }else{
+      // 다음 위치가 nil이라면, break
+      if(parent_node->left == t->nil){
+        break;
+      }
+      // 아니면, 이동
+      parent_node = parent_node->left;
     }
   }
-  parent_node = parent_node->parent;
 
   // 삽입
   if (parent_node->key < cur_node->key){
@@ -79,6 +88,7 @@ while(cur_node != t->root){
       parent_node->color = RBTREE_BLACK;
       return t->root;
     }
+    // 부모기준, 현재위치 확인
     if (parent_node->key < cur_node->key){
       insert_position = 1;
     }
