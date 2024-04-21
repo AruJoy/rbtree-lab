@@ -18,8 +18,37 @@ rbtree *new_rbtree(void) {
 }
 
 void delete_rbtree(rbtree *t) {
+  if(t->root == NULL){
+    free(t->nil);
+    free(t);
+    return;
+  } else if(t->root == t->nil){
+    free(t->nil);
+    free(t);
+    return;
+  }
+  
+  rbtree *lTree = (rbtree *)calloc(1, sizeof(rbtree));
+  node_t *l_nil = (rbtree *)calloc(1, sizeof(rbtree));
+  l_nil->color = RBTREE_BLACK;
+  l_nil->key = 0;
+  lTree->nil = l_nil;
+  lTree->root = t->root->left;
 
+  rbtree *rTree = (rbtree *)calloc(1, sizeof(rbtree));
+  node_t *r_nil = (rbtree *)calloc(1, sizeof(rbtree));
+  r_nil->color = RBTREE_BLACK;
+  r_nil->key = 0;
+  rTree->nil = r_nil;
+  rTree->root = t->root->right;
+
+  delete_rbtree(lTree);
+  delete_rbtree(rTree);
+
+  free(t->root);
+  free(t->nil);
   free(t);
+  return;
 }
 
 node_t *rbtree_insert(rbtree *t, const key_t key) {
@@ -271,8 +300,18 @@ if(parent_position == 1){
 }
 
 node_t *rbtree_find(const rbtree *t, const key_t key) {
-  // TODO: implement find
-  return t->root;
+  node_t* curNode = t->root;
+  while (curNode != t->nil && curNode->key != key){
+    if(curNode->key < key){
+      curNode = curNode->right;
+    }else{
+      curNode = curNode->left;
+    }
+  }
+  if(curNode == t->nil){
+    return NULL;
+  }
+  return curNode;
 }
 
 node_t *rbtree_min(const rbtree *t) {
