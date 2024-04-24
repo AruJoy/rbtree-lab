@@ -379,6 +379,6 @@ int main(void) {
   test_distinct_values();
   test_duplicate_values();
   test_multi_instance();
-  // test_find_erase_rand(10000, 17);
+  test_find_erase_rand(10000, 17);
   printf("Passed all tests!\n");
 }

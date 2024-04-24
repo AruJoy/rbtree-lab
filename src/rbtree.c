@@ -70,7 +70,8 @@ void rb_delete_fixup(rbtree* t, node_t* x){
         x->parent->color = RBTREE_RED;
         left_rotate(t, x->parent);
         sibling = x->parent->right;
-      }if(sibling->left->color == RBTREE_BLACK && sibling->right->color == RBTREE_BLACK){
+      }
+      if(sibling->left->color == RBTREE_BLACK && sibling->right->color == RBTREE_BLACK){
         sibling->color = RBTREE_RED;
         x = x->parent;
       }else{
@@ -101,7 +102,7 @@ void rb_delete_fixup(rbtree* t, node_t* x){
         if(sibling->left->color == RBTREE_BLACK){
           sibling->right->color = RBTREE_BLACK;
           sibling->color = RBTREE_RED;
-          left_rotate(t, x->parent);
+          left_rotate(t, sibling);
           sibling = x->parent->left;
         }
         sibling->color = x->parent->color;
@@ -547,7 +548,8 @@ int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n){
 //     rbtree *t = new_rbtree();
 
 //     // 삽입할 노드 키 배열
-//     int keys[] = {10, 5, 8, 34, 67, 23, 156, 24, 2, 12, 24, 36, 990, 25};
+//     int keys[] = {45, 32, 67, 12, 89, 24, 5, 78, 56, 11, 45, 23, 9, 100, 76, 54, 32, 18, 82, 97};
+
 
 //     // 트리에 노드 삽입
 //     for (int i = 0; i < sizeof(keys) / sizeof(keys[0]); i++) {
@@ -555,7 +557,7 @@ int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n){
 //     }
 //     print_rbtree(t, t->root, 0);
 //     // 삭제할 노드 키 배열
-//     int delete_keys[] = {10, 5, 8, 34, 67, 23, 156, 24, 2, 12, 24, 36, 990, 25};
+//     int delete_keys[] = {45, 32, 67, 12, 89, 24, 5, 78, 56, 11, 45, 23, 9, 100, 76, 54, 32, 18, 82, 97};
 
 //     // 트리에서 노드 삭제
 //     for (int i = 0; i < sizeof(delete_keys) / sizeof(delete_keys[0]); i++) {
